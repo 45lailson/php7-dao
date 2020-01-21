@@ -2,12 +2,19 @@
 
 require_once("config.php");
 
-$sql = new Sql();
+/*$sql = new Sql();
 
 $usuarios = $sql->select("SELECT * FROM tb_usuarios");
 
 echo json_encode($usuarios);
+*/
 
+
+$evelton = new Usuario();
+
+$evelton->loadbyId(16);
+
+echo $evelton;
 
 
  ?>
