@@ -23,8 +23,26 @@ require_once("config.php");
 //echo json_encode($search);
 
 //carrega um usuario  usando o login e a senha
+//$usuario = new Usuario();
+//$usuario->login("45lailson","0123456");
+
+//echo $usuario;
+
+//Criando um novo Usuario
+
+//$aluno = new Usuario("aluno","aluno012334","alunooo@gmail.com");
+/*$aluno->setDeslogin("teste");
+$aluno->setDessenha("aluno0123");
+$aluno->setEmail("aluno@gmail.com");
+*/
+//$aluno->insert();
+//echo $aluno;
+
 $usuario = new Usuario();
-$usuario->login("45lailson","0123456");
+
+$usuario->loadbyId(9);
+
+$usuario->update ("Hcode" , "hcode01234" , "hcode01234");
 
 echo $usuario;
 

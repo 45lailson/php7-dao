@@ -59,13 +59,8 @@ class Usuario {
 
 		if (count($results) > 0 ) {
  
- 			$row = $results[0];
+ 			$this->setData($results[0]);
 
- 			$this->setIdusuario($row['idusuario']);
- 			$this->setDeslogin($row['deslogin']);
- 			$this->setDessenha($row['dessenha']);
- 			$this->setEmail($row['email']);
- 			$this->setDtcadastro(new DateTime($row['dtcadastro']));
 		}
 
 
@@ -105,13 +100,9 @@ class Usuario {
 
 		if (count($results) > 0 ) {
  
- 			$row = $results[0];
+ 			$this->setData($results[0]);
 
- 			$this->setIdusuario($row['idusuario']);
- 			$this->setDeslogin($row['deslogin']);
- 			$this->setDessenha($row['dessenha']);
- 			$this->setEmail($row['email']);
- 			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+ 			
 
  			// caso o usuario nao seja autenticado temos um else responsavel por mostrar ao usuario
 
@@ -121,6 +112,63 @@ class Usuario {
 		}
 
 
+	}
+
+	public function setData($data) {
+
+		$this->setIdusuario($data['idusuario']);
+ 		$this->setDeslogin($data['deslogin']);
+ 		$this->setDessenha($data['dessenha']);
+ 		$this->setEmail($data['email']);
+ 		$this->setDtcadastro(new DateTime($data['dtcadastro']));
+
+
+	}
+
+	// metodo insert para inserir um novo usuario
+
+	public function insert() {
+
+		$sql = new Sql();
+
+		$results = $sql->select("CALL sp_usuarios_insert(:LOGIN, :PASSWORD, :EMAIL)",array(
+			':LOGIN'=>$this->getDeslogin(),
+			':PASSWORD'=>$this->getDessenha(),
+			':EMAIL'=>$this->getEmail()
+		));
+
+			if (count($results) > 0) {
+				$this->setData($results[0]);
+
+			}
+
+	}
+
+	// metodo que atualiza dados da tabela
+
+	public function update ($login, $password , $email) {
+
+		$this->setDeslogin($login);
+		$this->setDessenha($password);
+		$this->setEmail($email);
+
+		$sql = new Sql();
+
+		$sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN , dessenha = :PASSWORD , email = :EMAIL WHERE idusuario = :ID", array(
+			':LOGIN'=>$this->getDeslogin(),
+			':PASSWORD'=>$this->getDessenha(),
+			':EMAIL'=>$this->getEmail(),
+			':ID'=>$this->getIdusuario()
+
+
+		));
+	}
+
+	public function __construct($login = "", $password = "" , $email = "") {
+
+		$this->setDeslogin($login);
+		$this->setDessenha($password);
+		$this->setEmail($email);
 	}
 
 	public function __toString() {
