@@ -2,52 +2,56 @@
 
 class Sql extends PDO {
 
-	 private $conn;
+	private $conn;
 
-	 public function __construct(){
+	//conexao usando metodo construtor para conectar automaticamente
 
-	 	$this->conn = new PDO("mysql:host=localhost;dbname=dbphp7", "root", "");
+	public function __construct(){
 
-	 }
+		$this->conn = new PDO("mysql:host=localhost;dbname=dbphp7","root","");
 
-	 private function setParams($statment, $parameters = array()) {
+	}
 
-	 	foreach ($parameters as $key => $value) {
-	 		
-	 		$this->setParam($statment, $key, $value);
+	private function setParams($statment , $parameters = array()) {
 
-	 	}
+		// pecorre os resultados via interacao
+
+		foreach ($parameters as $key => $value) {
+			
+			$this->setParam($statment ,$key, $value);
+		}
+	}
+
+	private function setParam($statment, $key, $value) {
+
+		$statment->bindParam($key, $value);
+	}
+
+	//executa um comando no banco usando o metodo abaixo, rawquery e uma query bruta
+
+	public function query($rawQuery, $params = array()) {
+
+		$stmt = $this->conn->prepare($rawQuery);
+
+		$this->setParams($stmt, $params);
+
+		$stmt->execute();
+
+		return $stmt;
 
 
-	 }
+	}
 
-	 private function setParam($statment, $key, $value) {
+	public function select($rawQuery, $params = array()) :array {
 
-	 	$statment->bindParam($key, $value);
-	 }
+		$stmt = $this->query($rawQuery , $params);
 
-	 public function query($rawQuery, $params = array()) {
+		//PDO::FETCH_ASSOC retorna um array indexado pelo nome da coluna
 
-	 	$stmt = $this->conn->prepare($rawQuery);
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
-	 	$this->setParams($stmt, $params);
-
-	 	$stmt->execute();
-
-	 	return $stmt;
-
-	 	
-	 }
-
-	 public function select($rawQuery, $params = array()) {
-
-	 $stmt = $this->query($rawQuery, $params);
-
-	 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-	} 
 
 }
-
 
  ?>
