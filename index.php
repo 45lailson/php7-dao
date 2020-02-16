@@ -38,6 +38,10 @@ $aluno->setEmail("aluno@gmail.com");
 //$aluno->insert();
 //echo $aluno;
 
+// alterando um Usuario
+
+/*
+
 $usuario = new Usuario();
 
 $usuario->loadbyId(9);
@@ -45,5 +49,20 @@ $usuario->loadbyId(9);
 $usuario->update ("Hcode" , "hcode01234" , "hcode01234");
 
 echo $usuario;
+
+*/
+
+$usuario = new Usuario();
+
+$usuario->loadbyId(10);
+
+$usuario->delete();
+
+echo $usuario;
+
+
+
+
+
 
  ?>
